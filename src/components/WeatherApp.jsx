@@ -42,8 +42,11 @@ const WeatherApp = () => {
           placeholder="Enter city name"
           value={city}
           onChange={(e) => setCity(e.target.value)}
+          disabled={loading} // Disable the input while loading
         />
-        <button onClick={handleSearch}>Search</button>
+        <button onClick={handleSearch} disabled={loading}>
+          {loading ? "Loading..." : "Search"} {/* Change button text */}
+        </button>
       </div>
       {loading && <p>Loading data…</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
