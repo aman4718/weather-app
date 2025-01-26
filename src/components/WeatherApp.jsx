@@ -1,28 +1,23 @@
 import React, { useState } from "react";
 
 const WeatherApp = () => {
-  const [city, setCity] = useState(""); // User input for city name
-  const [weatherData, setWeatherData] = useState(null); // Weather data from API
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(null); // Error message
+  const [city, setCity] = useState(""); 
+  const [weatherData, setWeatherData] = useState(null); 
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(null); 
 
   const handleSearch = async () => {
-    // If no city name is entered, alert the user
     if (!city.trim()) {
       alert("Please enter a city name.");
       return;
     }
 
-    // Reset states and set loading to true
     setLoading(true);
     setError(null);
     setWeatherData(null);
 
     try {
-      // Artificial delay to ensure loading state is visible
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Fetch weather data
+      await new Promise((resolve) => setTimeout(resolve, 700)); 
       const response = await fetch(
         `https://api.weatherapi.com/v1/current.json?key=a22bb9a358564871b32133556241703&q=${city}`
       );
@@ -31,11 +26,11 @@ const WeatherApp = () => {
       }
 
       const data = await response.json();
-      setWeatherData(data); // Update weather data state
+      setWeatherData(data);
     } catch (err) {
-      setError("Failed to fetch weather data"); // Handle errors
+      setError("Failed to fetch weather data");
     } finally {
-      setLoading(false); // Set loading to false
+      setLoading(false);
     }
   };
 
@@ -43,42 +38,45 @@ const WeatherApp = () => {
     <div>
       <h1>Weather App</h1>
       <div>
-        {/* Input for city name */}
         <input
           type="text"
           placeholder="Enter city name"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          disabled={loading} // Disable input while loading
+          disabled={loading}
           data-testid="city-input"
         />
-        {/* Search button */}
         <button onClick={handleSearch} disabled={loading} data-testid="search-button">
           {loading ? "Loading..." : "Search"}
         </button>
       </div>
-      {/* Loading message */}
-      {loading && <p data-testid="loading-state">Loading data…</p>}
-      {/* Error message */}
-      {error && <p style={{ color: "red" }} data-testid="error-message">{error}</p>}
-      {/* Weather data */}
+      {loading && (
+        <p data-testid="loading-state" aria-live="polite">
+          Loading data…
+        </p>
+      )}
+      {error && (
+        <p data-testid="error-message" style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
       {weatherData && (
         <div className="weather-cards" data-testid="weather-data">
           <div className="weather-card">
             <h3>Temperature</h3>
-            <p>{weatherData.current.temp_c}°C</p>
+            <p>{weatherData.current?.temp_c ?? "N/A"}°C</p>
           </div>
           <div className="weather-card">
             <h3>Humidity</h3>
-            <p>{weatherData.current.humidity}%</p>
+            <p>{weatherData.current?.humidity ?? "N/A"}%</p>
           </div>
           <div className="weather-card">
             <h3>Condition</h3>
-            <p>{weatherData.current.condition.text}</p>
+            <p>{weatherData.current?.condition?.text ?? "N/A"}</p>
           </div>
           <div className="weather-card">
             <h3>Wind Speed</h3>
-            <p>{weatherData.current.wind_kph} kph</p>
+            <p>{weatherData.current?.wind_kph ?? "N/A"} kph</p>
           </div>
         </div>
       )}
