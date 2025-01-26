@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 const WeatherApp = () => {
-  const [city, setCity] = useState(""); 
-  const [weatherData, setWeatherData] = useState(null); 
-  const [loading, setLoading] = useState(false); 
+  const [city, setCity] = useState("");
+  const [weatherData, setWeatherData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleSearch = async () => {
@@ -26,8 +26,7 @@ const WeatherApp = () => {
       const data = await response.json();
       setWeatherData(data);
     } catch (err) {
-      setError(err.message);
-      alert("Failed to fetch weather data");
+      setError("Failed to fetch weather data");
     } finally {
       setLoading(false);
     }
@@ -45,7 +44,7 @@ const WeatherApp = () => {
           disabled={loading} // Disable the input while loading
         />
         <button onClick={handleSearch} disabled={loading}>
-          {loading ? "Loading..." : "Search"} {/* Change button text */}
+          {loading ? "Loading..." : "Search"}
         </button>
       </div>
       {loading && <p>Loading data…</p>}
