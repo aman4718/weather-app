@@ -41,14 +41,15 @@ const WeatherApp = () => {
           placeholder="Enter city name"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          disabled={loading} // Disable the input while loading
+          disabled={loading}
+          data-testid="city-input"
         />
-        <button onClick={handleSearch} disabled={loading}>
+        <button onClick={handleSearch} disabled={loading} data-testid="search-button">
           {loading ? "Loading..." : "Search"}
         </button>
       </div>
-      {loading && <p>Loading data…</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {loading && <p data-testid="loading-state">Loading data…</p>}
+      {error && <p style={{ color: "red" }} data-testid="error-message">{error}</p>}
       {weatherData && (
         <div className="weather-cards">
           <div className="weather-card">
